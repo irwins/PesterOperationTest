@@ -48,9 +48,7 @@ $ExpectedConfiguration = @{
         InfrastructureMaster = 'DC-DSC-01.pshirwin.local'
         DistinguishedName = 'DC=pshirwin,DC=local'
         DNSRoot = 'pshirwin.local'
-        DomainControllers = @(
-            'DC-DSC-01'
-        )
+        DomainControllers = @('DC-DSC-01')
     }
     PasswordPolicy = @{
         PasswordHistoryCount = 24
@@ -62,15 +60,20 @@ $ExpectedConfiguration = @{
         MinPasswordLength = 8
         ComplexityEnabled = $true
     }
-    Sites = @('Default-First-Site-Name')
+    Sites = @('Default-First-Site-Name','Branch01')
     SiteLinks = @(
-       @{
+       [PSCustomObject]@{
             Name = 'DEFAULTIPSITELINK'
             Cost = 100
             ReplicationFrequencyInMinutes = 180
         }
     )
-    SubNets = @()
+    SubNets = @(
+        [PSCustomObject]@{
+            Name = '192.168.0.0/24'
+            Site = 'CN=Branch01,CN=Sites,CN=Configuration,DC=pshirwin,DC=local'
+        }    
+    )
 }
 
 Describe "Active Directory Operational Validation" {
